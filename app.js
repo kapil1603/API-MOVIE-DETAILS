@@ -27,6 +27,14 @@ initializeDbAndServer();
 
 // list of all movie names
 
+const convertDbObjectToResponseObject = (dbObject) => {
+  return {
+    movieId: dbObject.movie_id,
+    directorId: dbObject.director_id,
+    movieName: dbObject.movie_name,
+    leadActor: dbObject.lead_actor,
+  };
+};
 app.get("/movies/", async (request, response) => {
   const getMovieList = `
     SELECT *
@@ -34,14 +42,6 @@ app.get("/movies/", async (request, response) => {
     ORDER BY movie_id`;
   const movieList = await db.all(getMovieList);
   //   response.send(movieList);
-  const convertDbObjectToResponseObject = (dbObject) => {
-    return {
-      movieId: dbObject.movie_id,
-      directorId: dbObject.director_id,
-      movieName: dbObject.movie_name,
-      leadActor: dbObject.lead_actor,
-    };
-  };
 
   response.send(
     movieList.map((eachPlayer) => convertDbObjectToResponseObject(eachPlayer))
@@ -56,7 +56,9 @@ app.get("/movies/:movieId/", async (request, response) => {
     FROM movie
     WHERE movie_id = ${movieId}`;
   const movie = await db.get(getMovie);
-  response.send(movie);
+  response.send(
+    movie.map((eachPlayer) => convertDbObjectToResponseObject(eachPlayer))
+  );
 });
 
 // Creates a new movie
