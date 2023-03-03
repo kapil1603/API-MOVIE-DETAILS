@@ -84,9 +84,9 @@ app.put("/movies/:movieId/", async (request, response) => {
         movie_name = '${movieName}',
         lead_actor = '${leadActor}'
    WHERE movie_id = ${movieId} `;
-  console.log(getUpdateMovie); // moviename and leadactor is string char nut directorid id not
+  //   console.log(getUpdateMovie); // moviename and leadactor is string char nut directorid id not
   await db.run(getUpdateMovie);
-  response.send("Movie Details Update");
+  response.send("Movie Details Updated");
 });
 
 // Deletes a movie from the movie
@@ -123,6 +123,8 @@ app.get("/directors/", async (request, response) => {
     )
   );
 });
+
+module.exports = app;
 
 // a list of all movie names directed by a specific director
 
